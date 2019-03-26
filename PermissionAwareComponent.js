@@ -7,22 +7,29 @@ class PermissionAwareComponent extends Component {
     super(props)
 
     this.state = {
-      componentToRender:props.defaultComponent
+      componentToRender:props.defaultComponent,
     }
   }
 
   async handleComponentEvaluation({permission,component}) {
-    const { Permissions } = Expo
     const { status } = (await Permissions.askAsync(permission))
-    status ? this.setState(() => ({componentToRender:(component)})) : null
+    status !== 'denied' ? this.setState(() => ({componentToRender:(component)})) : null
+    return status
   }
 
-  async componentDidMount() {
+  async askForPermissions(permissionComponentList, index) {
+    status = await this.handleComponentEvaluation(permissionComponentList[index])
+    if(status === 'denied') {
+      this.askForPermissions(permissionComponentList, index+1)
+    }
+  }
+
+  componentDidMount() {
     const {
       permissionComponentList
     } = this.props
 
-    permissionComponentList.forEach(this.handleComponentEvaluation.bind(this))
+    this.askForPermissions(permissionComponentList,0)
   }
 
   render() {
