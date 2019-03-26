@@ -11,14 +11,18 @@ class PermissionAwareComponent extends Component {
     }
   }
 
+  async handleComponentEvaluation({permission,component}) {
+    const { Permissions } = Expo
+    const { status } = (await Permissions.askAsync(permission))
+    status ? this.setState(() => ({componentToRender:(component)})) : null
+  }
+
   async componentDidMount() {
     const {
       permissionComponentList
     } = this.props
 
-    permissionComponentList.forEach((permission,component) =>
-      Permissions.askAsync(permission) ? this.setState(() => ({componentToRender:component})) : null
-    )
+    permissionComponentList.forEach(this.handleComponentEvaluation.bind(this))
   }
 
   render() {
