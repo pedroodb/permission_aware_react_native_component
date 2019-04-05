@@ -18,10 +18,13 @@ class PermissionAwareComponent extends Component {
   }
 
   async askForPermissions(permissionComponentList, index) {
-    status = await this.handleComponentEvaluation(permissionComponentList[index])
-    if(status === 'denied') {
-      this.askForPermissions(permissionComponentList, index+1)
+    if(index != permissionComponentList.length) {
+      status = await this.handleComponentEvaluation(permissionComponentList[index])
+      if(status === 'denied') {
+        this.askForPermissions(permissionComponentList, index+1)
+      }
     }
+    
   }
 
   componentDidMount() {
