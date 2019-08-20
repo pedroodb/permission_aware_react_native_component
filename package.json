@@ -1,6 +1,6 @@
 {
   "name": "permission_aware_react_native_component",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A react native component that receives a list of pairs ('expo permission constant', component), and will render the component that first maches a permission that has been granted, or will ask the user for ir otherwise.",
   "main": "PermissionAwareComponent.js",
   "scripts": {
