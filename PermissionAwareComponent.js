@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Permissions } from 'expo'
+import constants from './constants'
+
+import permisionMap from './PermissionMap'
 
 class PermissionAwareComponent extends Component {
 
@@ -11,8 +14,14 @@ class PermissionAwareComponent extends Component {
     }
   }
 
+  getConstants = () => constants
+
   async handleComponentEvaluation({permission,component}) {
-    const { status } = (await Permissions.askAsync(permission))
+    const { status } = await Permissions.askAsync(
+      Array.isArray(permission) ?
+        permission.map(each => permisionMap(each)) :
+        permission
+    )
     status !== 'denied' ? this.setState(() => ({componentToRender:(component)})) : null
     return status
   }
@@ -47,4 +56,7 @@ class PermissionAwareComponent extends Component {
 
 }
 
-export default PermissionAwareComponent
+export default {
+  PermissionAwareComponent,
+
+}
