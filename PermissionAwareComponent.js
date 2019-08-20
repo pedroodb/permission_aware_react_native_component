@@ -14,13 +14,11 @@ class PermissionAwareComponent extends Component {
     }
   }
 
-  getConstants = () => constants
-
   async handleComponentEvaluation({permission,component}) {
     const { status } = await Permissions.askAsync(
       Array.isArray(permission) ?
         permission.map(each => permisionMap(each)) :
-        permission
+        permisionMap(permission)
     )
     status !== 'denied' ? this.setState(() => ({componentToRender:(component)})) : null
     return status
@@ -56,7 +54,7 @@ class PermissionAwareComponent extends Component {
 
 }
 
-export default {
-  PermissionAwareComponent,
+export const PermissionAware = PermissionAwareComponent
+export const PermissionConstants = constants
 
-}
+export default PermissionAwareComponent
