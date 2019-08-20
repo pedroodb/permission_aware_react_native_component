@@ -15,11 +15,9 @@ class PermissionAwareComponent extends Component {
   }
 
   async handleComponentEvaluation({permission,component}) {
-    const { status } = await Permissions.askAsync(
-      Array.isArray(permission) ?
-        permission.map(each => permisionMap(each)) :
-        permisionMap(permission)
-    )
+    const { status } = Array.isArray(permission) ?
+      await Permissions.askAsync(...permission.map(each => permisionMap(each))) :
+      await Permissions.askAsync(permisionMap(permission))
     status !== 'denied' ? this.setState(() => ({componentToRender:(component)})) : null
     return status
   }
