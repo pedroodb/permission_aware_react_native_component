@@ -1,5 +1,4 @@
 import { Permissions } from 'expo'
-import NetInfo from "@react-native-community/netinfo";
 
 import {
   NOTIFICATIONS,
@@ -41,10 +40,6 @@ const permissionMap = permission => {
     default:
       return null
   }
-}
-
-async function ourAskAsync(permission){
-  return permission == "INTERNET" ? {status : NetInfo.isConnected()} : Permissions.askAsync(permission);
 }
 
 export default permissionMap

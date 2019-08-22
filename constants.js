@@ -1,3 +1,4 @@
+//Constantes de permisos
 export const CAMERA = '_camera'
 export const AUDIO_RECORDING = '_audio_recording'
 export const CONTACTS = '_contacts'
@@ -8,7 +9,16 @@ export const SYSTEM_BRIGHTNESS = '_system_brightness'
 export const NOTIFICATIONS = '_notifications'
 export const USER_FACING_NOTIFICATIONS = '_user_facing_notifications'
 export const LOCATION = '_location'
-export const INTERNET = '_internet'
+
+//Constantes de conexion a internet
+export const WIFI = 'wifi'
+export const ANY = 'any'
+export const CELLULAR = {
+  '4g': '4g',
+  '3g': '3g',
+  '2g': '2g',
+}
+export const NONE = 'none'
 
 export default {
   CAMERA,
@@ -21,5 +31,8 @@ export default {
   NOTIFICATIONS,
   USER_FACING_NOTIFICATIONS,
   LOCATION,
-  INTERNET,
+  WIFI,
+  CELLULAR,
+  NONE,
+  ANY,
 }

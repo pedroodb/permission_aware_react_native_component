@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { Permissions } from 'expo'
-import constants from './constants'
+import constants, {
+  NONE,
+  ANY,
+  WIFI,
+  CELLULAR,
+} from './constants'
+import { NetInfo } from 'react-native'
 
 import permisionMap from './PermissionMap'
 
@@ -14,12 +20,34 @@ class PermissionAwareComponent extends Component {
     }
   }
 
-  async handleComponentEvaluation({permission,component}) {
+  async handleConnection(connectionRequire){
+    const connectionInfo = await NetInfo.getConnectionInfo()
+    console.log(connectionInfo)
+    switch (connectionRequire) {
+      case WIFI:
+        return NetInfo.isConnected && connectionInfo.type === WIFI
+      case CELLULAR['4g']:
+        return NetInfo.isConnected && connectionInfo.effectiveType === CELLULAR['4g']
+      case CELLULAR['3g']:
+        return NetInfo.isConnected && connectionInfo.effectiveType === CELLULAR['3g']
+      case CELLULAR['2g']:
+        return NetInfo.isConnected && connectionInfo.effectiveType === CELLULAR['2g']
+      case ANY:
+        return NetInfo.isConnected
+      case NONE:
+        return !NetInfo.isConnected
+      default:
+        return true
+    }
+  }
+  
+  async handleComponentEvaluation({permission,connectionRequire,component}) {
     const { status } = Array.isArray(permission) ?
       await Permissions.askAsync(...permission.map(each => permisionMap(each))) :
       await Permissions.askAsync(permisionMap(permission))
-    status !== 'denied' ? this.setState(() => ({componentToRender:(component)})) : null
-    return status
+    const connection = await this.handleConnection(connectionRequire)
+    if (status !== 'denied' && connection) this.setState(() => ({componentToRender:(component)}))
+    return connection ? status : 'denied'
   }
 
   async askForPermissions(permissionComponentList, index) {
