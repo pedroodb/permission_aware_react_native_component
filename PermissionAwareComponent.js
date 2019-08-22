@@ -22,7 +22,6 @@ class PermissionAwareComponent extends Component {
 
   async handleConnection(connectionRequire){
     const connectionInfo = await NetInfo.getConnectionInfo()
-    console.log(connectionInfo)
     switch (connectionRequire) {
       case WIFI:
         return NetInfo.isConnected && connectionInfo.type === WIFI
