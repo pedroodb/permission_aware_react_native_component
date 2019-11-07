@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import { Permissions } from 'expo'
+import * as Permissions from 'expo-permissions'
 import constants, {
   NONE,
   ANY,
   WIFI,
   CELLULAR,
+  NO_POWER_SAVER,
 } from './constants'
 import { NetInfo } from 'react-native'
+import * as Battery from 'expo-battery'
 
 import permisionMap from './PermissionMap'
 
@@ -20,7 +22,15 @@ class PermissionAwareComponent extends Component {
     }
   }
 
-  async handleConnection(connectionRequire){
+  async handleBattery(battteryLevelRequire){
+    if (battteryLevelRequire === NO_POWER_SAVER){
+      return ! await Battery.isLowPowerModeEnabledAsync() 
+    }else{
+      return true
+    }
+  }
+
+  async handleConnection(connectionRequire = ANY){
     const connectionInfo = await NetInfo.getConnectionInfo()
     switch (connectionRequire) {
       case WIFI:
@@ -40,14 +50,15 @@ class PermissionAwareComponent extends Component {
     }
   }
   
-  async handleComponentEvaluation({permission,connectionRequire,component}) {
-    const { status } = permission !== undefined ? 
+  async handleComponentEvaluation({permission,connectionRequire,battteryLevelRequire, component }) {
+    const sufficientBattery = await this.handleBattery(battteryLevelRequire)
+    const { status } = (permission !== undefined && sufficientBattery) ? 
       Array.isArray(permission) ?
         await Permissions.askAsync(...permission.map(each => permisionMap(each))) :
         await Permissions.askAsync(permisionMap(permission))
-      : 'granted'
+      : ({status:'granted'})
     const connection = await this.handleConnection(connectionRequire)
-    if (status !== 'denied' && connection) this.setState(() => ({componentToRender:(component)}))
+    if ((status === 'granted') && connection && sufficientBattery) this.setState(() => ({componentToRender:(component)}))
     return connection ? status : 'denied'
   }
 

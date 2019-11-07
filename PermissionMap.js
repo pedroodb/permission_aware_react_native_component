@@ -1,4 +1,4 @@
-import { Permissions } from 'expo'
+import * as Permissions from 'expo-permissions'
 
 import {
   NOTIFICATIONS,
@@ -10,7 +10,8 @@ import {
   CAMERA_ROLL,
   CALENDAR,
   REMINDERS,
-  SYSTEM_BRIGHTNESS,  
+  SYSTEM_BRIGHTNESS,
+  ANY_REQUIRED,  
 } from './constants'
 
 const permissionMap = permission => {
@@ -35,8 +36,6 @@ const permissionMap = permission => {
       return Permissions.REMINDERS
     case SYSTEM_BRIGHTNESS:
       return Permissions.SYSTEM_BRIGHTNESS
-    case INTERNET:
-      return 
     default:
       return null
   }

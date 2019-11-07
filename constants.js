@@ -10,6 +10,7 @@ export const NOTIFICATIONS = '_notifications'
 export const USER_FACING_NOTIFICATIONS = '_user_facing_notifications'
 export const LOCATION = '_location'
 
+
 //Constantes de conexion a internet
 export const WIFI = 'wifi'
 export const ANY = 'any'
@@ -19,6 +20,9 @@ export const CELLULAR = {
   '2g': '2g',
 }
 export const NONE = 'none'
+
+//Constantes de estado de bateria
+export const NO_POWER_SAVER = 'no_power_saver'
 
 export default {
   CAMERA,
@@ -35,4 +39,5 @@ export default {
   CELLULAR,
   NONE,
   ANY,
+  NO_POWER_SAVER,
 }
