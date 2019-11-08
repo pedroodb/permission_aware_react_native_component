@@ -68,13 +68,11 @@ If necessary, it can be clarified that if the activated energy saving mode is fo
       permission:[PermissionConstants.LOCATION],
       connectionRequire:PermissionConstants.WIFI,
       battteryLevelRequire: PermissionConstants.NO_POWER_SAVER,
-      component:(<GPSMap navigation={this.props.navigation} />)
+      component:(<GPSMap/>)
     }),
     ({
-      permission:undefined,
-      connectionRequire:PermissionConstants.WIFI,
-      battteryLevelRequire: PermissionConstants.NO_POWER_SAVER,
-      component:(<ManualMap navigation={this.props.navigation} />)
+      connectionRequire:PermissionConstants.ANY,
+      component:(<ManualMap/>)
     }),
   ]
 ```
